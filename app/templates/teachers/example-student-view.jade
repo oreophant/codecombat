@@ -7,3 +7,16 @@ block content
   div= view.user.broadName()
   div= view.classroom.get('name')
   div= view.lastPlayedString
+  table.table
+    each versionedCourse in view.classroom.get('courses') || []
+      - var course = _.find(view.courses.models, function(c) {return c.id === versionedCourse._id;});
+      if !course
+        - continue;
+      each level, index in versionedCourse.levels || []
+        - var levelNumber = view.classroom.getLevelNumber(level.original, index + 1)
+        tr
+          td= course.get('name')
+          td= levelNumber
+          td= level.name
+          td= view.levelProgressMap[level.original]
+

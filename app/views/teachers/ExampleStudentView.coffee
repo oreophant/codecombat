@@ -30,12 +30,14 @@ module.exports = class ExampleStudentView extends RootView
     @user = new User({_id: studentID})
     @supermodel.trackRequest(@user.fetch())
 
+    @levelProgressMap = {}
+
     super(options)
 
   onClassroomSync: ->
     # Now that we have the classroom from db, can request all level sessions for this classroom
     @sessions = new LevelSessions()
-    @sessions.comparator = 'changed' # Sort level sessions by chanaged field, ascending
+    @sessions.comparator = 'changed' # Sort level sessions by changed field, ascending
     @listenTo @sessions, 'sync', @onSessionsSync
     @supermodel.trackRequests(@sessions.fetchForAllClassroomMembers(@classroom))
 
@@ -44,6 +46,10 @@ module.exports = class ExampleStudentView extends RootView
     # This may be called multiple times due to paged server API calls via fetchForAllClassroomMembers
     return if @destroyed # Don't do anything if page was destroyed after db request
     @updateLastPlayedString()
+    @updateLevelProgressMap()
+
+    # Rerun template/jade file to display new last played string
+    @render()
 
   updateLastPlayedString: ->
     # Make sure all our data is loaded, @sessions may not even be intialized yet
@@ -74,5 +80,23 @@ module.exports = class ExampleStudentView extends RootView
     @lastPlayedString += ", " if @lastPlayedString
     @lastPlayedString += session.get('changed')
 
-    # Rerun template/jade file to display new last played string
-    @render()
+  updateLevelProgressMap: ->
+    return unless @courses.loaded and @levels.loaded and @sessions?.loaded and @user.loaded
+
+    # Map levels to sessions once, so we don't have to search entire session list multiple times below
+    levelSessionMap = {}
+    for session in @sessions.models
+      levelSessionMap[session.get('level').original] = session
+
+    # Create mapping of level to student progress
+    @levelProgressMap = {}
+    for versionedCourse in @classroom.get('courses') ? []
+      for versionedLevel in versionedCourse.levels
+        session = levelSessionMap[versionedLevel.original]
+        if session
+          if session.get('state')?.complete
+            @levelProgressMap[versionedLevel.original] = 'complete'
+          else
+            @levelProgressMap[versionedLevel.original] = 'started'
+        else
+          @levelProgressMap[versionedLevel.original] = 'not started'
