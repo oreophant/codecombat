@@ -96,7 +96,7 @@
     "stripe": "~2.9.0",
     "swagger-ui-express": "^1.0.0",
     "tv4": "~1.0.16",
-    "underscore.string": "2.3.x",
+    "underscore.string": "3.3.5",
     "winston": "0.6.x",
     "yamljs": "^0.2.8"
   },
