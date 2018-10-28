@@ -46,7 +46,9 @@
     "smoke-next": "COCO_SMOKE_DOMAIN='next' nightwatch",
     "smoke-prod": "COCO_SMOKE_DOMAIN='prod' nightwatch",
     "smoke-staging": "COCO_SMOKE_DOMAIN='staging' nightwatch",
-    "coverage": "node ./bin/coverage.js"
+    "coverage": "node ./bin/coverage.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "main": "index.js",
   "keywords": [
@@ -69,9 +71,9 @@
     "co": "^4.6.0",
     "co-express": "^1.2.1",
     "coffee-script": "1.9.x",
-    "connect": "2.7.x",
+    "connect": "3.0.0",
     "country-list": "0.0.3",
-    "express": "~3.0.6",
+    "express": "~4.15.5",
     "express-useragent": "~0.0.9",
     "graceful-fs": "~2.0.1",
     "gridfs-stream": "~1.1.1",
@@ -85,7 +87,7 @@
     "mongoose-cache": "https://github.com/nwinter/mongoose-cache/tarball/master",
     "mysql": "^2.11.1",
     "node-force-domain": "~0.1.0",
-    "node-gyp": "~0.13.0",
+    "node-gyp": "~3.4.0",
     "node-statsd": "^0.1.1",
     "passport": "0.1.x",
     "passport-local": "0.1.x",
@@ -98,7 +100,8 @@
     "tv4": "~1.0.16",
     "underscore.string": "2.3.x",
     "winston": "0.6.x",
-    "yamljs": "^0.2.8"
+    "yamljs": "^0.2.8",
+    "snyk": "^1.105.0"
   },
   "devDependencies": {
     "after-brunch": "0.0.5",
@@ -149,5 +152,6 @@
   "engines": {
     "node": "^5.1.1",
     "npm": "^3.0.0"
-  }
+  },
+  "snyk": true
 }
