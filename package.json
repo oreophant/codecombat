@@ -81,7 +81,7 @@
     "mailchimp-api": "2.0.x",
     "moment": "~2.5.0",
     "mongodb": "^2.0.28",
-    "mongoose": "4.5.3",
+    "mongoose": "5.11.7",
     "mongoose-cache": "https://github.com/nwinter/mongoose-cache/tarball/master",
     "mysql": "^2.11.1",
     "node-force-domain": "~0.1.0",
